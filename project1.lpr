@@ -15,6 +15,7 @@ var
         MobilPhoneNumber:string;
         end;
 
+procedure AskData;
 begin
   write(NameRequest);
   readln(Datas.Name);
@@ -24,6 +25,10 @@ begin
   readln(Datas.TelephoneNumber);
   write(MobilePhoneNumberRequest);
   readln(Datas.MobilPhoneNumber);
+end;
+
+procedure WriteData;
+begin
   writeln;
   writeln;
   writeln(Datas.Name);
@@ -31,6 +36,11 @@ begin
   writeln(Datas.TelephoneNumber);
   writeln(Datas.MobilPhoneNumber);
   writeln;
+end;
+
+begin
+  AskData;
+  WriteData;
   writeln(ExitString);
   readln;
 end.
