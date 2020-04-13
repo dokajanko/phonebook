@@ -7,40 +7,49 @@ const
   MobilePhoneNumberRequest='K‚rem a mobiltelefon sz mot: ';
   ExitString='Nyomj egy ENTER-t a kil‚p‚shez!';
 
-var
-  Datas:record
-        Name:string;
-        Address:string;
-        TelephoneNumber:string;
-        MobilPhoneNumber:string;
+type
+  RDatas=record
+         Name:string;
+         Address:string;
+         TelephoneNumber:string;
+         MobilPhoneNumber:string;
         end;
+
+var
+  Datas:RDatas;
 
 procedure AskData;
 begin
-  write(NameRequest);
-  readln(Datas.Name);
-  write(AddressRequest);
-  readln(Datas.Address);
-  write(TelephoneNumberRequest);
-  readln(Datas.TelephoneNumber);
-  write(MobilePhoneNumberRequest);
-  readln(Datas.MobilPhoneNumber);
+  with Datas do
+       begin
+          write(NameRequest);
+          readln(Name);
+          write(AddressRequest);
+          readln(Address);
+          write(TelephoneNumberRequest);
+          readln(TelephoneNumber);
+          write(MobilePhoneNumberRequest);
+          readln(MobilPhoneNumber);
+       end;
 end;
 
 procedure WriteData;
 begin
   writeln;
   writeln;
-  writeln(Datas.Name);
-  writeln(Datas.Address);
-  writeln(Datas.TelephoneNumber);
-  writeln(Datas.MobilPhoneNumber);
+  with Datas do
+       begin
+          writeln(Datas.Name);
+          writeln(Datas.Address);
+          writeln(Datas.TelephoneNumber);
+          writeln(Datas.MobilPhoneNumber);
+       end;
   writeln;
 end;
 
 begin
   AskData;
   WriteData;
-  writeln(ExitString);
+  write(ExitString);
   readln;
 end.
