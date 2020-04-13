@@ -1,11 +1,11 @@
 program PhoneBook;
 
 const
-  NameRequest='Kâ€šrem a nevet: ';
-  AddressRequest='Kâ€šrem a cÂ¡met: ';
-  TelephoneNumberRequest='Kâ€šrem a telefonszÂ mot: ';
-  MobilePhoneNumberRequest='Kâ€šrem a mobiltelefon szÂ mot: ';
-  ExitString='Nyomj egy ENTER-t a kilâ€špâ€šshez!';
+  NameRequest='K‚rem a nevet: ';
+  AddressRequest='K‚rem a c¡met: ';
+  TelephoneNumberRequest='K‚rem a telefonsz mot: ';
+  MobilePhoneNumberRequest='K‚rem a mobiltelefon sz mot: ';
+  ExitString='Nyomj egy ENTER-t a kil‚p‚shez!';
 
 var
   Datas:record
