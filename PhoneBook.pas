@@ -12,8 +12,8 @@ const
   FirstNames:array [1..5] of string = ('Nagy','Kis','Toth','Lakatos', 'Horvath');
   LastNames:array [1..5] of string = ('Janos','Andrea','Levente','Cecilia','Robert');
   AddressSample:array [1..5] of string =('Bem utca','Liliom ter','Arpad ut','Hajnal utca','Mikszath korut');
-  TelephoneNumberSample:word = (642);
-  MobilePhoneNumberSample:array [1..2] of word = (630,670);
+  TelephoneNumberSample:string ='0642';
+  MobilePhoneNumberSample:array [1..2] of string = ('0630','0670');
 
 type
   PDatas=^RDatas;
@@ -44,10 +44,10 @@ begin
                 Address:=AddressSample[random(length(AddressSample))+1]+' '+inttostr(random(50));
                 FixNumber:=1;
                 while FixNumber<100000 do FixNumber:=random(999999);
-                TelephoneNumber:='0'+inttostr(TelephoneNumberSample)+'-'+inttostr(FixNumber);
+                TelephoneNumber:=TelephoneNumberSample+'-'+inttostr(FixNumber);
                 FixNumber:=1;
                 while FixNumber<1000000 do FixNumber:=random(9999999);
-                MobilePhoneNumber:='0'+inttostr(MobilePhoneNumberSample[random(length(MobilePhoneNumberSample))+1])+'-'+inttostr(FixNumber);
+                MobilePhoneNumber:=MobilePhoneNumberSample[random(length(MobilePhoneNumberSample))+1]+'-'+inttostr(FixNumber);
                 NextData:=nil;
               end;
          if DatasFirst=nil then DatasFirst:=DatasNew
@@ -63,7 +63,7 @@ begin
                        begin
                           with DatasTemp^ do
                                begin
-                                  Writeln(Name:15,' ',Address:20,' ',TelephoneNumber:15,' ',MobilePhoneNumber:15);
+                                  Writeln(Name:16,' ',Address:19,' ',TelephoneNumber:15,' ',MobilePhoneNumber:15);
                                 end;
                           DatasTemp:=DatasTemp^.NextData;
                        end;
