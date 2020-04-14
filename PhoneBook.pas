@@ -1,6 +1,6 @@
 program PhoneBook;
 
-uses sysutils;
+uses crt,sysutils;
 
 const
   NameRequest='Kerem a nevet: ';
@@ -28,20 +28,26 @@ type
 var
   Datas:RDatas;
   DatasFirst, DatasLast, DatasNew, DatasTemp:PDatas;
+  ExitNumber:byte;
 
 procedure FillDatas;
 var
   HowMuch:byte;
+  FixNumber:longint;
 begin
-  for HowMuch:=1 to 10 do
+  for HowMuch:=1 to 15 do
       begin
          new(DatasNew);
          with DatasNew^ do
               begin
-                Name:=FirstNames[random(length(FirstNames)+1)]+' '+LastNames[random(length(LastNames)+1)];
-                Address:=AddressSample[random(length(AddressSample)+1)]+' '+inttostr(random(50));
-                TelephoneNumber:='0'+inttostr(TelephoneNumberSample)+'-'+inttostr(random(999999));
-                MobilePhoneNumber:='0'+inttostr(MobilePhoneNumberSample[random(length(MobilePhoneNumberSample)+1)])+'-'+inttostr(random(9999999));
+                Name:=FirstNames[random(length(FirstNames))+1]+' '+LastNames[random(length(LastNames))+1];
+                Address:=AddressSample[random(length(AddressSample))+1]+' '+inttostr(random(50));
+                FixNumber:=1;
+                while FixNumber<100000 do FixNumber:=random(999999);
+                TelephoneNumber:='0'+inttostr(TelephoneNumberSample)+'-'+inttostr(random(FixNumber));
+                FixNumber:=1;
+                while FixNumber<100000 do FixNumber:=random(999999);
+                MobilePhoneNumber:='0'+inttostr(MobilePhoneNumberSample[random(length(MobilePhoneNumberSample))+1])+'-'+inttostr(FixNumber);
                 NextData:=nil;
               end;
          if DatasFirst=nil then DatasFirst:=DatasNew
@@ -57,7 +63,7 @@ begin
                        begin
                           with DatasTemp^ do
                                begin
-                                  Writeln(Name,' ',Address,' ',TelephoneNumber,' ',MobilePhoneNumber);
+                                  Writeln(Name:15,' ',Address:20,' ',TelephoneNumber:15,' ',MobilePhoneNumber:15);
                                 end;
                           DatasTemp:=DatasTemp^.NextData;
                        end;
@@ -103,32 +109,18 @@ begin
   writeln;
 end;
 
-procedure FillDatasTemp;
-var
-  HowMuch:byte;
-begin
-  for HowMuch:=1 to 10 do
-      begin
-         with Datas do
-              begin
-                Name:=FirstNames[random(length(FirstNames)+1)]+' '+LastNames[random(length(LastNames)+1)];
-                Address:=AddressSample[random(length(AddressSample)+1)]+' '+inttostr(random(50));
-                TelephoneNumber:='0'+inttostr(TelephoneNumberSample)+'-'+inttostr(random(999999));
-                MobilePhoneNumber:='0'+inttostr(MobilePhoneNumberSample[random(length(MobilePhoneNumberSample)+1)])+'-'+inttostr(random(9999999));
-                Writeln(Name,' ',Address,' ',TelephoneNumber,' ',MobilePhoneNumber);
-              end;
-      end;
-end;
-
 begin
   //AskData;
   //WriteData;
   randomize;
-  //FillDatas;
-  FillDatasTemp;   //Temporary procedure. Random generates data not working perfect.
-  //WriteRandomDatas;
-  //ReleaseRandomDatas;
-  writeln;
-  write(ExitString);
-  readln;
+  repeat
+    clrscr;
+    FillDatas;
+    WriteRandomDatas;
+    ReleaseRandomDatas;
+    writeln;
+    //write(ExitString);
+    writeln('0 - Exit');
+    readln(ExitNumber);
+  until ExitNumber=0;
 end.
