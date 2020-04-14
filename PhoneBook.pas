@@ -32,10 +32,10 @@ var
 
 procedure FillDatas;
 var
-  HowMuch:byte;
+  HowMuch:integer;
   FixNumber:longint;
 begin
-  for HowMuch:=1 to 15 do
+  for HowMuch:=1 to 22 do
       begin
          new(DatasNew);
          with DatasNew^ do
@@ -44,9 +44,9 @@ begin
                 Address:=AddressSample[random(length(AddressSample))+1]+' '+inttostr(random(50));
                 FixNumber:=1;
                 while FixNumber<100000 do FixNumber:=random(999999);
-                TelephoneNumber:='0'+inttostr(TelephoneNumberSample)+'-'+inttostr(random(FixNumber));
+                TelephoneNumber:='0'+inttostr(TelephoneNumberSample)+'-'+inttostr(FixNumber);
                 FixNumber:=1;
-                while FixNumber<100000 do FixNumber:=random(999999);
+                while FixNumber<1000000 do FixNumber:=random(9999999);
                 MobilePhoneNumber:='0'+inttostr(MobilePhoneNumberSample[random(length(MobilePhoneNumberSample))+1])+'-'+inttostr(FixNumber);
                 NextData:=nil;
               end;
@@ -120,7 +120,7 @@ begin
     ReleaseRandomDatas;
     writeln;
     //write(ExitString);
-    writeln('0 - Exit');
+    write('0 - Exit: ');
     readln(ExitNumber);
   until ExitNumber=0;
 end.
