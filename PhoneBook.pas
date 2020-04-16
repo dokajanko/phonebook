@@ -25,10 +25,21 @@ type
          NextData:PDatas;
         end;
 
+  DataRecord=record
+         Name:string;
+         Addr:string;
+         Tel:string;
+         MTel:string;
+  end;
+
+  InfStringArray=array of string;
+
 var
   Datas:RDatas;
   DatasFirst, DatasLast, DatasNew, DatasTemp:PDatas;
   ExitNumber:byte;
+  HowManyArray:InfStringArray;
+  HowManyRows:longint;
 
 procedure FillDatas;
 var
@@ -139,14 +150,11 @@ begin
 end;
 
 procedure ReadFile;
-type
-  TArray=array of string;
 var
-  HowManyArray:array [1..5000] of string;
   ReadFileName:string;
   FileName:textfile;
   Datas:string;
-  HowManyRows,WichLine:longint;
+  Temp:longint;
 begin
   HowManyRows:=0;
   gotoxy(1,10);
@@ -155,13 +163,26 @@ begin
   assign(FileName,ReadFileName);
   reset(FileName);
   while not eof(FileName) do
-                 begin
-                   readln(FileName,Datas);
-                   //writeln(Datas);
-                   HowManyArray[HowManyRows]:=Datas;
-                   inc(HowManyRows);
-                 end;
+                       begin
+                         readln(FileName,Datas);
+                         inc(HowManyRows);
+                       end;
+  setlength(HowManyArray,HowManyRows);
   close(FileName);
+  reset(FileName);
+  Temp:=0;
+  while not eof(FileName) do
+                       begin
+                         readln(FileName,HowManyArray[Temp]);
+                         inc(Temp);
+                       end;
+  close(FileName);
+end;
+
+procedure WriteArray;
+var
+  WichLine:longint;
+begin
   gotoxy(1,1);
   write('                                                                   ');
   gotoxy(1,1);
@@ -170,22 +191,26 @@ begin
   gotoxy(1,3);
   write('                                                                   ');
   gotoxy(1,3);
-  write(HowManyArray[WichLine+1]);
-  repeat
-      gotoxy(1,3);
-      write('                                                                   ');
-      gotoxy(1,3);
-      write(HowManyArray[WichLine+1]);
-      gotoxy(1,1);
-      write('                                                                   ');
-      gotoxy(1,1);
-      write('Melyik sort irjam ki (',HowManyRows,')?: ');
-      readln(WichLine);
-  until WichLine>HowManyRows;
+  if (WichLine<=HowManyRows) and (WichLine<>0) then
+     begin
+       write(HowManyArray[WichLine-1]);
+       repeat
+           gotoxy(1,3);
+           write('                                                                   ');
+           gotoxy(1,3);
+           write(HowManyArray[WichLine-1]);
+           gotoxy(1,1);
+           write('                                                                   ');
+           gotoxy(1,1);
+           write('Melyik sort irjam ki (',HowManyRows,')?: ');
+           readln(WichLine);
+       until (WichLine>HowManyRows) or (WichLine=0);
+     end;
 end;
 
 begin
-   CreateFile;
+   //CreateFile;
    clrscr;
    ReadFile;
+   WriteArray;
 end.
