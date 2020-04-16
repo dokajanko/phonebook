@@ -9,11 +9,11 @@ const
   MobilePhoneNumberRequest='Kerem a mobiltelefonszamot: ';
   ExitString='Nyomj egy ENTER-t a kilepeshez!';
 
-  FirstNames:array [1..5] of string = ('Nagy','Kis','Toth','Lakatos', 'Horvath');
-  LastNames:array [1..5] of string = ('Janos','Andrea','Levente','Cecilia','Robert');
+  FirstNames:array [1..6] of string = ('Nagy','Kis','Toth','Lakatos', 'Horvath','Dobos');
+  LastNames:array [1..6] of string = ('Janos','Andrea','Levente','Cecilia','Robert','Erika');
   AddressSample:array [1..5] of string =('Bem utca','Liliom ter','Arpad ut','Hajnal utca','Mikszath korut');
   TelephoneNumberSample:string ='0642';
-  MobilePhoneNumberSample:array [1..2] of string = ('0630','0670');
+  MobilePhoneNumberSample:array [1..3] of string = ('0630','0670','0620');
 
 type
   PDatas=^RDatas;
@@ -109,18 +109,83 @@ begin
   writeln;
 end;
 
+procedure CreateFile;
+var
+  HowMany,Temp:integer;
+  FixNumber:longint;
+  ReadFileName,LineRead:string;
+  FileName:textfile;
+  Name,Address, TelephoneNumber,MobilePhoneNumber:string;
 begin
-  //AskData;
-  //WriteData;
-  randomize;
+  write('A file neve?: ');
+  readln(ReadFileName);
+  write('Mennyi rekordot hozzak letre?: ');
+  readln(HowMany);
+  assignfile(FileName,ReadFileName);
+  rewrite(FileName);
+  for Temp:=1 to HowMany do
+      begin
+        Name:=FirstNames[random(length(FirstNames))+1]+' '+LastNames[random(length(LastNames))+1];
+        Address:=AddressSample[random(length(AddressSample))+1]+' '+inttostr(random(50));
+        FixNumber:=1;
+        while FixNumber<100000 do FixNumber:=random(999999);
+        TelephoneNumber:=TelephoneNumberSample+'-'+inttostr(FixNumber);
+        FixNumber:=1;
+        while FixNumber<1000000 do FixNumber:=random(9999999);
+        MobilePhoneNumber:=MobilePhoneNumberSample[random(length(MobilePhoneNumberSample))+1]+'-'+inttostr(FixNumber);
+        writeln(FileName,Name,' ',Address,' ',TelephoneNumber,' ',MobilePhoneNumber);
+      end;
+  close(FileName);
+end;
+
+procedure ReadFile;
+type
+  TArray=array of string;
+var
+  HowManyArray:array [1..5000] of string;
+  ReadFileName:string;
+  FileName:textfile;
+  Datas:string;
+  HowManyRows,WichLine:longint;
+begin
+  HowManyRows:=0;
+  gotoxy(1,10);
+  write('Mi a fajl neve?: ');
+  readln(ReadFileName);
+  assign(FileName,ReadFileName);
+  reset(FileName);
+  while not eof(FileName) do
+                 begin
+                   readln(FileName,Datas);
+                   //writeln(Datas);
+                   HowManyArray[HowManyRows]:=Datas;
+                   inc(HowManyRows);
+                 end;
+  close(FileName);
+  gotoxy(1,1);
+  write('                                                                   ');
+  gotoxy(1,1);
+  write('Melyik sort irjam ki (',HowManyRows,')?: ');
+  readln(WichLine);
+  gotoxy(1,3);
+  write('                                                                   ');
+  gotoxy(1,3);
+  write(HowManyArray[WichLine+1]);
   repeat
-    clrscr;
-    FillDatas;
-    WriteRandomDatas;
-    ReleaseRandomDatas;
-    writeln;
-    //write(ExitString);
-    write('0 - Exit: ');
-    readln(ExitNumber);
-  until ExitNumber=0;
+      gotoxy(1,3);
+      write('                                                                   ');
+      gotoxy(1,3);
+      write(HowManyArray[WichLine+1]);
+      gotoxy(1,1);
+      write('                                                                   ');
+      gotoxy(1,1);
+      write('Melyik sort irjam ki (',HowManyRows,')?: ');
+      readln(WichLine);
+  until WichLine>HowManyRows;
+end;
+
+begin
+   CreateFile;
+   clrscr;
+   ReadFile;
 end.
