@@ -1,2 +1,2 @@
 # phonebook
-Phonebook development.
+Phonebook development from a very beginner programmer.
