@@ -33,6 +33,7 @@ type
   end;
 
   InfStringArray=array of string;
+  InfDataRecord=array of DataRecord;
 
 var
   Datas:RDatas;
@@ -40,6 +41,7 @@ var
   ExitNumber:byte;
   HowManyArray:InfStringArray;
   HowManyRows:longint;
+  DataRecords:InfDataRecord;
 
 procedure FillDatas;
 var
@@ -208,9 +210,64 @@ begin
      end;
 end;
 
+function GetString(WorkString:string;var Position:integer):string;
 begin
-   //CreateFile;
-   clrscr;
-   ReadFile;
-   WriteArray;
+  GetString:='';
+  while (WorkString[Position]<>#32) and (Position<>length(WorkString)+1) do
+                       begin
+                         GetString:=GetString+WorkString[Position];
+                         inc(Position);
+                       end;
+  inc(Position);
+end;
+
+procedure WriteDataRecords;
+var
+  Temp2,Temp3,Temp4:integer;
+  Street1:string;
+begin
+  setlength(DataRecords,HowManyRows);
+  for Temp4:=0 to HowManyRows-1 do
+      begin
+        Temp3:=1;
+        Temp2:=1;
+        with DataRecords[Temp4] do
+             begin
+                repeat
+                  Street1:=GetString(HowManyArray[Temp4],Temp2);
+                  if Temp3=1 then Name:=Street1+' ';
+                  if Temp3=2 then Name:=Name+Street1;
+                  if Temp3=3 then Addr:=Street1+' ';
+                  if Temp3=4 then Addr:=Addr+Street1+' ';
+                  if Temp3=5 then Addr:=Addr+Street1;
+                  If Temp3=6 then Tel:=Street1;
+                  If Temp3=7 then MTel:=Street1;
+                  inc(Temp3);
+              until Temp2>length(HowManyArray[Temp4]);
+            end;
+      end;
+  clrscr;
+  write('Melyik rekordot mutassam meg ',HowManyRows,'?: ');
+  readln(Temp4);
+  repeat
+    clrscr;
+    gotoxy(1,5);
+    writeln(DataRecords[Temp4-1].Name);
+    writeln(DataRecords[Temp4-1].Addr);
+    writeln(DataRecords[Temp4-1].Tel);
+    writeln(DataRecords[Temp4-1].MTel);
+    writeln;
+    writeln(HowManyArray[Temp4-1]);
+    gotoxy(1,1);
+    write('Melyik rekordot mutassam meg ',HowManyRows,'?: ');
+    readln(Temp4);
+  until Temp4=0;
+end;
+
+begin
+  clrscr;
+  //CreateFile;
+  //WriteArray;
+  ReadFile;
+  WriteDataRecords;
 end.
